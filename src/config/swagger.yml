@@ -1,0 +1,178 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "The product Id"
+          example: 1
+        name:
+          type: string
+          description: "The product name"
+          example: "Monitor curvo de 49 pulgadas"
+        price:
+          type: number
+          description: "The product price"
+          example: 300
+        availability:
+          type: boolean
+          description: "The product availability"
+          example: true
+paths:
+  /api/products:
+    get:
+      summary: "Get a list of products"
+      tags:
+        - Products
+      description: Return a list of products
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array                
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      summary: Creates a new product
+      tags:
+        - Products
+      description: Returns a new record from database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Monitor curvo 49 pulgadas"
+                price:
+                  type: integer
+                  example: 300    
+      responses:
+        201:
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"     
+        400:
+          description: Bad Request - Input data
+
+      
+  /api/products/{id}:
+    get:
+      summary: "Get a product by ID"
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          description: Return a single product based on its unique ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        404:
+          description: Product not found
+        400:
+          description: Bad Request - Invalid ID
+    put:
+      summary: Updates a product with user input
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          description: Return a updated product
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Monitor curvo 49 pulgadas"
+                price:
+                  type: integer
+                  example: 300    
+                availability:
+                  type: boolean
+                  example: true
+      responses:
+        202:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        404:
+          description: Product not found
+        400:
+          description: Bad Request - Invalid ID or invalid input Data
+    patch:
+      summary: Update a product availability
+      tags:
+        - Products
+      description: Return de updated availability
+      parameters:
+        - in: path
+          name: id
+          description: Return a updated product
+          required: true
+          schema:
+            type: integer
+      responses:
+        202:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        404:
+          description: Product not found
+        400:
+          description: Bad Request - Invalid ID
+    delete:
+      summary: Delete a product using its ID
+      tags:
+        - Products
+      description: Delete a product by given ID
+      parameters:
+        - in: path
+          name: id
+          description: Return a confirmation message
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    example: "Producto eliminado"
+        404:
+          description: Product not found
+        400:
+          description: Bad Request - Invalid ID
+
